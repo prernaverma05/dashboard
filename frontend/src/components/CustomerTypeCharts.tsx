@@ -178,8 +178,8 @@ const CustomerTypeCharts: React.FC<ChartProps> = ({ data }) => {
   };
 
   const renderDonutChart = (data: { type: string; value: number }[]) => {
-    const width = 400;
-    const height = 400;
+    const width = 250;
+    const height = 250;
     const radius = Math.min(width, height) / 2;
 
     // Clear previous chart
@@ -246,7 +246,7 @@ const CustomerTypeCharts: React.FC<ChartProps> = ({ data }) => {
   };
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
+    <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 4 }}>
       <svg ref={barChartRef}></svg>
       <svg ref={donutChartRef}></svg>
     </Box>
