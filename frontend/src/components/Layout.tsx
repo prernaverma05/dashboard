@@ -26,7 +26,6 @@ import {
   Person as PersonIcon,
 } from '@mui/icons-material';
 
-const drawerWidth = 240;
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -34,13 +33,20 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
+  // const [desktopOpen, setDesktopOpen] = useState(false);
+  const [navbarOpen, setNavbarOpen] = useState(false);
+  const [drawerWidth, setDrawerWidth] = useState(0);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  // const isDesktop = true;
+  const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
   const navigate = useNavigate();
   const location = useLocation();
 
   const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
+    setNavbarOpen(!navbarOpen);
+    //on landing on the home page, the navbar should be closed.
+      setDrawerWidth(navbarOpen ? 0 : 240);
   };
 
   const menuItems = [
@@ -62,9 +68,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               selected={location.pathname === item.path}
               onClick={() => {
                 navigate(item.path);
-                if (isMobile) {
-                  setMobileOpen(false);
-                }
+                handleDrawerToggle();
               }}
             >
               <ListItemIcon>{item.icon}</ListItemIcon>
@@ -88,11 +92,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       >
         <Toolbar>
           <IconButton
-            color="inherit"
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: 'none' } }}
+            sx={{ mr: 2, }}
           >
             <MenuIcon />
           </IconButton>
@@ -105,7 +108,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         component="nav"
         sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
       >
-        {isMobile ? (
+        {/* {isMobile ? (
           <Drawer
             variant="temporary"
             open={mobileOpen}
@@ -137,7 +140,28 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           >
             {drawer}
           </Drawer>
-        )}
+        )} */}
+
+        <Drawer
+          variant={isDesktop ? "temporary" : "permanent"}
+          open= {navbarOpen}
+          onClose={navbarOpen ? handleDrawerToggle : undefined}
+          ModalProps={{
+            keepMounted: true,
+          }}
+          sx={{
+            display: 
+            { xs: 'block', sm: 'block' }, // Show on all sizes
+            '& .MuiDrawer-paper': {
+              boxSizing: 'border-box',
+              width: drawerWidth,
+            },
+          }}
+        >
+          {drawer}
+        </Drawer>
+
+
       </Box>
       <Box
         component="main"
