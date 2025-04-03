@@ -167,6 +167,7 @@ const Dashboard: React.FC = () => {
               <TableCell colSpan={3} align="center" sx={{ width: '25%' }}>Total</TableCell>
             </TableRow>
             <TableRow>
+            <TableCell align="right" sx={{ width: '8%' }}> </TableCell>
               {quarters.map(quarter => (
                 <React.Fragment key={quarter}>
                   <TableCell align="right" sx={{ width: '8%' }}># of Opps</TableCell>
@@ -174,6 +175,7 @@ const Dashboard: React.FC = () => {
                   <TableCell align="right" sx={{ width: '7%' }}>% of Total</TableCell>
                 </React.Fragment>
               ))}
+              <TableCell align="right" sx={{ width: '8%' }}></TableCell>
               <TableCell align="right" sx={{ width: '8%' }}># of Opps</TableCell>
               <TableCell align="right" sx={{ width: '10%' }}>ACV</TableCell>
               <TableCell align="right" sx={{ width: '7%' }}>% of Total</TableCell>
@@ -200,9 +202,9 @@ const Dashboard: React.FC = () => {
                         <TableCell align="right">{data.count}</TableCell>
                         <TableCell align="right">
                           ${data.acv.toLocaleString()}<br />
-                          <Typography variant="caption" color="textSecondary">
-                            {percentage.toFixed(1)}%
-                          </Typography>
+                        </TableCell>
+                        <TableCell align="right">
+                        {percentage.toFixed(1)}%<br />
                         </TableCell>
                       </React.Fragment>
                     );
@@ -277,65 +279,38 @@ const Dashboard: React.FC = () => {
           sx={{ 
             tableLayout: 'fixed',
             '& .MuiTableCell-root': {
-              fontSize: '0.75rem',
-              padding: '6px 3px',
-              borderRight: '1px solid rgba(224, 224, 224, 0.4)',
-              textAlign: 'center',
+              fontSize: '0.875rem', // Smaller font size
+              padding: '8px 4px', // Reduced padding
+              borderRight: '1px solid rgba(224, 224, 224, 0.4)', // Light vertical dividers
             },
             '& .MuiTableCell-root:last-child': {
-              borderRight: 'none',
-            },
-            '& .number-cell': {
-              fontFamily: 'monospace',
-              letterSpacing: '-0.5px',
+              borderRight: 'none', // Remove border from last column
             }
           }}
         >
           <TableHead>
             <TableRow>
-              <TableCell sx={{ width: '12%' }}>Team</TableCell>
+              <TableCell sx={{ width: '15%' }}>Team</TableCell>
               {quarters.map(quarter => (
-                <TableCell 
-                  key={quarter} 
-                  colSpan={3} 
-                  align="center" 
-                  sx={{ width: '17.6%' }}
-                >
+                <TableCell key={quarter} colSpan={3} align="center" sx={{ width: '20%' }}>
                   {quarter}
                 </TableCell>
               ))}
-              <TableCell 
-                colSpan={3} 
-                align="center" 
-                sx={{ width: '17.6%' }}
-              >
-                Total
-              </TableCell>
+              <TableCell colSpan={3} align="center" sx={{ width: '20%' }}>Total</TableCell>
             </TableRow>
             <TableRow>
-              <TableCell></TableCell>
-              {[...quarters, 'Total'].map(period => (
-                <React.Fragment key={period}>
-                  <TableCell 
-                    align="center" 
-                    sx={{ width: '4.8%' }}
-                  >
-                    # of Opps
-                  </TableCell>
-                  <TableCell 
-                    align="center" 
-                    sx={{ width: '8%' }}
-                  >
-                    ACV
-                  </TableCell>
-                  <TableCell 
-                    align="center" 
-                    sx={{ width: '4.8%' }}
-                  >
-                    % of Total
-                  </TableCell>
+            <TableCell align="right" sx={{ width: '6%' }}></TableCell>
+              {quarters.map(quarter => (
+                <React.Fragment key={quarter}>
+                  <TableCell align="right" sx={{ width: '6%' }}># of Opps</TableCell>
+                  <TableCell align="right" sx={{ width: '8%' }}>ACV</TableCell>
+                  <TableCell align="right" sx={{ width: '6%' }}>% of Total</TableCell>
                 </React.Fragment>
               ))}
+              <TableCell align="right" sx={{ width: '6%' }}></TableCell>
+              <TableCell align="right" sx={{ width: '6%' }}># of Opps</TableCell>
+              <TableCell align="right" sx={{ width: '8%' }}>ACV</TableCell>
+              <TableCell align="right" sx={{ width: '6%' }}>% of Total</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -348,12 +323,13 @@ const Dashboard: React.FC = () => {
               
               return (
                 <TableRow key={team}>
-                  <TableCell sx={{ 
-                    whiteSpace: 'nowrap', 
-                    overflow: 'hidden', 
-                    textOverflow: 'ellipsis',
-                    textAlign: 'left'
-                  }}>
+                  <TableCell 
+                    sx={{ 
+                      whiteSpace: 'nowrap', 
+                      overflow: 'hidden', 
+                      textOverflow: 'ellipsis' 
+                    }}
+                  >
                     {team}
                   </TableCell>
                   {quarters.map(quarter => {
@@ -363,84 +339,38 @@ const Dashboard: React.FC = () => {
                     
                     return (
                       <React.Fragment key={quarter}>
-                        <TableCell align="center" className="number-cell">
-                          {data.count}
-                        </TableCell>
-                        <TableCell 
-                          align="center" 
-                          className="number-cell"
-                          sx={{ 
-                            whiteSpace: 'nowrap',
-                            fontSize: '0.7rem'
-                          }}
-                        >
-                          ${data.acv.toLocaleString()}
-                        </TableCell>
-                        <TableCell align="center" className="number-cell">
-                          {percentage.toFixed(1)}%
-                        </TableCell>
-                      </React.Fragment>
+                  <TableCell align="right">{data.count}</TableCell>
+                  <TableCell align="right" sx={{ whiteSpace: 'nowrap' }}>
+                    ${data.acv.toLocaleString()}
+                  </TableCell>
+                  <TableCell align="right">{percentage.toFixed(1)}%</TableCell>
+                </React.Fragment>
                     );
                   })}
-                  <TableCell align="center" className="number-cell">
-                    {teamTotal.count}
-                  </TableCell>
-                  <TableCell 
-                    align="center" 
-                    className="number-cell"
-                    sx={{ 
-                      whiteSpace: 'nowrap',
-                      fontSize: '0.7rem'
-                    }}
-                  >
-                    ${teamTotal.acv.toLocaleString()}
-                  </TableCell>
-                  <TableCell align="center" className="number-cell">
+                  <TableCell align="right">{teamTotal.count}</TableCell>
+                  <TableCell align="right">${teamTotal.acv.toLocaleString()}</TableCell>
+                  <TableCell align="right">
                     {((teamTotal.acv / grandTotal.acv) * 100).toFixed(1)}%
                   </TableCell>
                 </TableRow>
               );
             })}
             <TableRow>
-              <TableCell sx={{ fontWeight: 'bold', textAlign: 'left' }}>Total</TableCell>
+              <TableCell sx={{ fontWeight: 'bold' }}>Total</TableCell>
               {quarterTotals.map(({ quarter, acv, count }) => (
                 <React.Fragment key={quarter}>
-                  <TableCell align="center" sx={{ fontWeight: 'bold' }} className="number-cell">
-                    {count}
-                  </TableCell>
-                  <TableCell 
-                    align="center" 
-                    sx={{ 
-                      fontWeight: 'bold', 
-                      whiteSpace: 'nowrap',
-                      fontSize: '0.7rem'
-                    }} 
-                    className="number-cell"
-                  >
+                  <TableCell align="right" sx={{ fontWeight: 'bold' }}>{count}</TableCell>
+                  <TableCell align="right" sx={{ fontWeight: 'bold' }}>
                     ${acv.toLocaleString()}
                   </TableCell>
-                  <TableCell align="center" sx={{ fontWeight: 'bold' }} className="number-cell">
-                    100%
-                  </TableCell>
+                  <TableCell align="right" sx={{ fontWeight: 'bold' }}>100%</TableCell>
                 </React.Fragment>
               ))}
-              <TableCell align="center" sx={{ fontWeight: 'bold' }} className="number-cell">
-                {grandTotal.count}
-              </TableCell>
-              <TableCell 
-                align="center" 
-                sx={{ 
-                  fontWeight: 'bold', 
-                  whiteSpace: 'nowrap',
-                  fontSize: '0.7rem'
-                }} 
-                className="number-cell"
-              >
+              <TableCell align="right" sx={{ fontWeight: 'bold' }}>{grandTotal.count}</TableCell>
+              <TableCell align="right" sx={{ fontWeight: 'bold' }}>
                 ${grandTotal.acv.toLocaleString()}
               </TableCell>
-              <TableCell align="center" sx={{ fontWeight: 'bold' }} className="number-cell">
-                100%
-              </TableCell>
+              <TableCell align="right" sx={{ fontWeight: 'bold' }}>100%</TableCell>
             </TableRow>
           </TableBody>
         </Table>
@@ -493,6 +423,7 @@ const Dashboard: React.FC = () => {
               <TableCell colSpan={3} align="center" sx={{ width: '25%' }}>Total</TableCell>
             </TableRow>
             <TableRow>
+            <TableCell align="right" sx={{ width: '8%' }}></TableCell>
               {quarters.map(quarter => (
                 <React.Fragment key={quarter}>
                   <TableCell align="right" sx={{ width: '8%' }}># of Opps</TableCell>
@@ -500,6 +431,7 @@ const Dashboard: React.FC = () => {
                   <TableCell align="right" sx={{ width: '7%' }}>% of Total</TableCell>
                 </React.Fragment>
               ))}
+              <TableCell align="right" sx={{ width: '8%' }}></TableCell>
               <TableCell align="right" sx={{ width: '8%' }}># of Opps</TableCell>
               <TableCell align="right" sx={{ width: '10%' }}>ACV</TableCell>
               <TableCell align="right" sx={{ width: '7%' }}>% of Total</TableCell>
@@ -613,6 +545,7 @@ const Dashboard: React.FC = () => {
               <TableCell colSpan={3} align="center" sx={{ width: '25%' }}>Total</TableCell>
             </TableRow>
             <TableRow>
+            <TableCell align="right" sx={{ width: '8%' }}></TableCell>
               {quarters.map(quarter => (
                 <React.Fragment key={quarter}>
                   <TableCell align="right" sx={{ width: '8%' }}># of Opps</TableCell>

@@ -126,30 +126,32 @@ const IndustriesPage: React.FC = () => {
         </Grid>
       </Grid>
 
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Industry</TableCell>
-              <TableCell align="right">Customers</TableCell>
-              <TableCell align="right">ACV</TableCell>
-              <TableCell align="right">Average ACV</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {filteredData.map((industry) => (
-              <TableRow key={industry.Acct_Industry}>
-                <TableCell>{industry.Acct_Industry}</TableCell>
-                <TableCell align="right">{industry.count}</TableCell>
-                <TableCell align="right">${industry.acv.toLocaleString()}</TableCell>
-                <TableCell align="right">
-                  ${(industry.acv / industry.count).toLocaleString()}
-                </TableCell>
+      <div className="table-container">
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell className="column-large">Industry</TableCell>
+                <TableCell className="column-small number-cell">Customers</TableCell>
+                <TableCell className="column-large number-cell">ACV</TableCell>
+                <TableCell className="column-large number-cell">Average ACV</TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+            </TableHead>
+            <TableBody>
+              {filteredData.map((industry) => (
+                <TableRow key={industry.Acct_Industry}>
+                  <TableCell className="column-large">{industry.Acct_Industry}</TableCell>
+                  <TableCell className="column-small number-cell">{industry.count}</TableCell>
+                  <TableCell className="column-large number-cell">${industry.acv.toLocaleString()}</TableCell>
+                  <TableCell className="column-large number-cell">
+                    ${(industry.acv / industry.count).toLocaleString()}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </div>
     </Box>
   );
 };

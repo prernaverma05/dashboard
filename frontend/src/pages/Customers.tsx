@@ -49,30 +49,32 @@ const Customers: React.FC = () => {
           </Select>
         </FormControl>
       </Box>
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Customer Type</TableCell>
-              <TableCell align="right">Count</TableCell>
-              <TableCell align="right">ACV</TableCell>
-              <TableCell align="right">Average ACV</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {filteredData.map((type) => (
-              <TableRow key={type.Cust_Type}>
-                <TableCell>{type.Cust_Type}</TableCell>
-                <TableCell align="right">{type.count}</TableCell>
-                <TableCell align="right">${type.acv.toLocaleString()}</TableCell>
-                <TableCell align="right">
-                  ${(type.acv / type.count).toLocaleString()}
-                </TableCell>
+      <div className="table-container">
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell className="column-medium">Customer Type</TableCell>
+                <TableCell className="column-small number-cell">Count</TableCell>
+                <TableCell className="column-large number-cell">ACV</TableCell>
+                <TableCell className="column-large number-cell">Average ACV</TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+            </TableHead>
+            <TableBody>
+              {filteredData.map((type) => (
+                <TableRow key={type.Cust_Type}>
+                  <TableCell className="column-medium">{type.Cust_Type}</TableCell>
+                  <TableCell className="column-small number-cell">{type.count}</TableCell>
+                  <TableCell className="column-large number-cell">${type.acv.toLocaleString()}</TableCell>
+                  <TableCell className="column-large number-cell">
+                    ${(type.acv / type.count).toLocaleString()}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </div>
     </Box>
   );
 };

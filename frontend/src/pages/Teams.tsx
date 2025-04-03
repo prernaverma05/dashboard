@@ -127,30 +127,32 @@ const TeamsPage: React.FC = () => {
         </Grid>
       </Grid>
 
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Team</TableCell>
-              <TableCell align="right">Customers</TableCell>
-              <TableCell align="right">ACV</TableCell>
-              <TableCell align="right">Average ACV</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {filteredData.map((team) => (
-              <TableRow key={team.Team}>
-                <TableCell>{team.Team}</TableCell>
-                <TableCell align="right">{team.count}</TableCell>
-                <TableCell align="right">${team.acv.toLocaleString()}</TableCell>
-                <TableCell align="right">
-                  ${(team.acv / team.count).toLocaleString()}
-                </TableCell>
+      <div className="table-container">
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell className="column-medium">Team</TableCell>
+                <TableCell className="column-small number-cell">Customers</TableCell>
+                <TableCell className="column-large number-cell">ACV</TableCell>
+                <TableCell className="column-large number-cell">Average ACV</TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+            </TableHead>
+            <TableBody>
+              {filteredData.map((team) => (
+                <TableRow key={team.Team}>
+                  <TableCell className="column-medium">{team.Team}</TableCell>
+                  <TableCell className="column-small number-cell">{team.count}</TableCell>
+                  <TableCell className="column-large number-cell">${team.acv.toLocaleString()}</TableCell>
+                  <TableCell className="column-large number-cell">
+                    ${(team.acv / team.count).toLocaleString()}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </div>
     </Box>
   );
 };

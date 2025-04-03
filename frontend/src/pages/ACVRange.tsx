@@ -126,30 +126,32 @@ const ACVRangePage: React.FC = () => {
         </Grid>
       </Grid>
 
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>ACV Range</TableCell>
-              <TableCell align="right">Customers</TableCell>
-              <TableCell align="right">ACV</TableCell>
-              <TableCell align="right">Average ACV</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {filteredData.map((range) => (
-              <TableRow key={range.ACV_Range}>
-                <TableCell>{range.ACV_Range}</TableCell>
-                <TableCell align="right">{range.count}</TableCell>
-                <TableCell align="right">${range.acv.toLocaleString()}</TableCell>
-                <TableCell align="right">
-                  ${(range.acv / range.count).toLocaleString()}
-                </TableCell>
+      <div className="table-container">
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell className="column-medium">ACV Range</TableCell>
+                <TableCell className="column-small number-cell">Customers</TableCell>
+                <TableCell className="column-large number-cell">ACV</TableCell>
+                <TableCell className="column-large number-cell">Average ACV</TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+            </TableHead>
+            <TableBody>
+              {filteredData.map((range) => (
+                <TableRow key={range.ACV_Range}>
+                  <TableCell className="column-medium">{range.ACV_Range}</TableCell>
+                  <TableCell className="column-small number-cell">{range.count}</TableCell>
+                  <TableCell className="column-large number-cell">${range.acv.toLocaleString()}</TableCell>
+                  <TableCell className="column-large number-cell">
+                    ${(range.acv / range.count).toLocaleString()}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </div>
     </Box>
   );
 };
