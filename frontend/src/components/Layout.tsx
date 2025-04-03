@@ -95,12 +95,12 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ mr: 2, }}
+            sx={{ mr: 2, color: '#FFFFFF'}}
           >
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            Analytics Dashboard
+            SKYGENI DASHBOARD
           </Typography>
         </Toolbar>
       </AppBar>

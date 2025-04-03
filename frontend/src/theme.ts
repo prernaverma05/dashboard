@@ -45,9 +45,9 @@ const theme = createTheme({
       color: '#333333',
     },
     h6: {
-      fontSize: '1rem',
+      fontSize: '2rem',
       fontWeight: 500,
-      color: '#333333',
+      color: '#FFFFFF',
     },
   },
   components: {

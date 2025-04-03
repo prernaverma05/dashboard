@@ -97,9 +97,9 @@ const TeamsPage: React.FC = () => {
             <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
                 <PeopleIcon sx={{ mr: 1 }} />
-                <Typography variant="h6">Total Customers</Typography>
+                <Typography variant="h6" sx={{ color: '#333333'}}>Total Customers</Typography>
               </Box>
-              <Typography variant="h4">{totalCustomers}</Typography>
+              <Typography variant="h4" sx={{ marginLeft: '27px'}}>{totalCustomers}</Typography>
             </CardContent>
           </Card>
         </Grid>
@@ -108,9 +108,9 @@ const TeamsPage: React.FC = () => {
             <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
                 <AccountBalanceIcon sx={{ mr: 1 }} />
-                <Typography variant="h6">Total ACV</Typography>
+                <Typography variant="h6" sx={{ color: '#333333'}}>Total ACV</Typography>
               </Box>
-              <Typography variant="h4">${totalACV.toLocaleString()}</Typography>
+              <Typography variant="h4" sx={{ marginLeft: '27px'}}>${totalACV.toLocaleString()}</Typography>
             </CardContent>
           </Card>
         </Grid>
@@ -119,9 +119,9 @@ const TeamsPage: React.FC = () => {
             <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
                 <TrendingUpIcon sx={{ mr: 1 }} />
-                <Typography variant="h6">Average ACV</Typography>
+                <Typography variant="h6" sx={{ color: '#333333'}}>Average ACV</Typography>
               </Box>
-              <Typography variant="h4">${averageACV.toLocaleString()}</Typography>
+              <Typography variant="h4" sx={{ marginLeft: '27px'}}>${averageACV.toLocaleString()}</Typography>
             </CardContent>
           </Card>
         </Grid>
