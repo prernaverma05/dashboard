@@ -1,16 +1,34 @@
+/**
+ * IndustryCharts Component
+ * 
+ * Visualizes industry distribution and performance data.
+ * Provides insights into industry-wise revenue and customer distribution.
+ * 
+ * Features:
+ * - Stacked bar chart for temporal analysis
+ * - Donut chart for overall distribution
+ * - Interactive legends and tooltips
+ * - Responsive layout
+ */
 import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 import { Box } from '@mui/material';
 
+/**
+ * Interface for industry data structure
+ */
 interface IndustryData {
-  count: number;
-  acv: number;
-  closed_fiscal_quarter: string;
-  Acct_Industry?: string;
+  count: number;         // Number of customers
+  acv: number;          // Annual Contract Value
+  closed_fiscal_quarter: string;  // Fiscal quarter
+  Acct_Industry?: string;  // Industry name
 }
 
+/**
+ * Props interface for the chart component
+ */
 interface ChartProps {
-  data: IndustryData[];
+  data: IndustryData[];  // Array of industry data
 }
 
 interface ProcessedData {

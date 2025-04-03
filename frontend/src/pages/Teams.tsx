@@ -1,3 +1,17 @@
+/**
+ * Teams Page Component
+ * 
+ * Displays team performance metrics and analytics.
+ * Shows quarterly performance data for each team including customer count and ACV metrics.
+ * 
+ * Features:
+ * - Quarter-based filtering
+ * - Team performance metrics
+ * - Interactive data table
+ * - Summary cards for key metrics
+ * - Loading and error states
+ */
+
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import {
@@ -25,13 +39,24 @@ import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import { api } from '../services/api';
 
+/**
+ * Main Teams page component
+ * Manages team performance data and visualization
+ */
 const TeamsPage: React.FC = () => {
+  // State management for quarter selection and data
   const [selectedQuarter, setSelectedQuarter] = useState('2024-Q2');
   const [teams, setTeams] = useState<Team[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  
+  // Available quarters for filtering
   const quarters = ['2023-Q3', '2023-Q4', '2024-Q1', '2024-Q2'];
 
+  /**
+   * Fetches team data on component mount
+   * Updates state with fetched data or error message
+   */
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -49,8 +74,8 @@ const TeamsPage: React.FC = () => {
     fetchData();
   }, []);
 
+  // Calculate metrics for the selected quarter
   const filteredData = teams.filter(d => d.closed_fiscal_quarter === selectedQuarter);
-  
   const totalCustomers = filteredData.reduce((sum, team) => sum + team.count, 0);
   const totalACV = filteredData.reduce((sum, team) => sum + team.acv, 0);
   const averageACV = totalCustomers > 0 ? totalACV / totalCustomers : 0;

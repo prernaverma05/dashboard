@@ -1,3 +1,17 @@
+/**
+ * ACV Range Page Component
+ * 
+ * Displays distribution of Annual Contract Value (ACV) ranges.
+ * Shows how customers are distributed across different ACV brackets.
+ * 
+ * Features:
+ * - Quarter-based filtering
+ * - ACV range distribution metrics
+ * - Summary statistics
+ * - Interactive data table
+ * - Loading and error handling
+ */
+
 import React, { useEffect, useState } from 'react';
 import {
   Paper,
@@ -24,13 +38,24 @@ import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import PeopleIcon from '@mui/icons-material/People';
 import { api } from '../services/api';
 
+/**
+ * Main ACV Range page component
+ * Manages ACV range data and visualization
+ */
 const ACVRangePage: React.FC = () => {
+  // State management
   const [selectedQuarter, setSelectedQuarter] = useState('2024-Q2');
   const [acvRanges, setAcvRanges] = useState<ACVRange[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  
+  // Available quarters for filtering
   const quarters = ['2023-Q3', '2023-Q4', '2024-Q1', '2024-Q2'];
 
+  /**
+   * Fetches ACV range data on component mount
+   * Updates state with fetched data or error message
+   */
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -48,8 +73,8 @@ const ACVRangePage: React.FC = () => {
     fetchData();
   }, []);
 
+  // Calculate metrics for selected quarter
   const filteredData = acvRanges.filter(d => d.closed_fiscal_quarter === selectedQuarter);
-  
   const totalCustomers = filteredData.reduce((sum, range) => sum + range.count, 0);
   const totalACV = filteredData.reduce((sum, range) => sum + range.acv, 0);
   const averageACV = totalCustomers > 0 ? totalACV / totalCustomers : 0;

@@ -1,3 +1,16 @@
+/**
+ * Layout Component
+ * 
+ * This component serves as the main layout wrapper for the entire application.
+ * It implements a responsive design with a collapsible navigation drawer and app bar.
+ * 
+ * Features:
+ * - Responsive navigation drawer (hamburger menu on mobile)
+ * - Fixed app bar with application title
+ * - Dynamic routing with React Router
+ * - Material-UI integration for styling
+ */
+
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import {
@@ -26,11 +39,18 @@ import {
   Person as PersonIcon,
 } from '@mui/icons-material';
 
-
+/**
+ * Props interface for the Layout component
+ * @property {React.ReactNode} children - Child components to be rendered in the main content area
+ */
 interface LayoutProps {
   children: React.ReactNode;
 }
 
+/**
+ * Main Layout component that wraps the entire application
+ * Manages the navigation drawer state and routing
+ */
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   // const [desktopOpen, setDesktopOpen] = useState(false);
@@ -43,6 +63,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  /**
+   * Toggles the navigation drawer open/closed state
+   * Updates the drawer width accordingly
+   */
   const handleDrawerToggle = () => {
     setNavbarOpen(!navbarOpen);
     //on landing on the home page, the navbar should be closed.

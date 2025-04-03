@@ -1,16 +1,34 @@
+/**
+ * TeamCharts Component
+ * 
+ * Visualizes team performance data using D3.js charts.
+ * Displays both bar charts for temporal analysis and donut charts for overall distribution.
+ * 
+ * Features:
+ * - Stacked bar chart showing team performance over time
+ * - Donut chart displaying team contribution distribution
+ * - Interactive tooltips and legends
+ * - Responsive design
+ */
 import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 import { Box } from '@mui/material';
 
+/**
+ * Interface for team performance data
+ */
 interface TeamData {
-  count: number;
-  acv: number;
-  closed_fiscal_quarter: string;
-  Team?: string;
+  count: number;         // Number of opportunities
+  acv: number;          // Annual Contract Value
+  closed_fiscal_quarter: string;  // Fiscal quarter
+  Team?: string;        // Team name
 }
 
+/**
+ * Props interface for the chart component
+ */
 interface ChartProps {
-  data: TeamData[];
+  data: TeamData[];     // Array of team performance data
 }
 
 interface ProcessedData {
@@ -18,10 +36,17 @@ interface ProcessedData {
   [key: string]: number | string; // Dynamic keys for different teams
 }
 
+/**
+ * Renders team performance visualizations
+ */
 const TeamCharts: React.FC<ChartProps> = ({ data }) => {
+  // Chart refs for D3 manipulation
   const barChartRef = useRef<SVGSVGElement | null>(null);
   const donutChartRef = useRef<SVGSVGElement | null>(null);
 
+  /**
+   * Processes and renders charts when data changes
+   */
   useEffect(() => {
     if (!data.length) return;
 
@@ -58,6 +83,11 @@ const TeamCharts: React.FC<ChartProps> = ({ data }) => {
     renderDonutChart(teamTotals);
   }, [data]);
 
+  /**
+   * Renders the stacked bar chart
+   * @param processedData - Processed team data
+   * @param teams - List of team names
+   */
   const renderBarChart = (processedData: ProcessedData[], teams: string[]) => {
     const margin = { top: 20, right: 150, bottom: 60, left: 60 };
     const width = 800 - margin.left - margin.right;
@@ -168,6 +198,10 @@ const TeamCharts: React.FC<ChartProps> = ({ data }) => {
       .text('Won ACV by Team');
   };
 
+  /**
+   * Renders the donut chart
+   * @param data - Team distribution data
+   */
   const renderDonutChart = (data: { type: string; value: number }[]) => {
     const width = 250;
     const height = 250;

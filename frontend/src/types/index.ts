@@ -1,21 +1,36 @@
+/**
+ * Global Type Definitions
+ * 
+ * Central repository for all TypeScript interfaces and types used across the application.
+ * Defines the shape of data structures used in the dashboard.
+ */
+
+/**
+ * Customer entity interface
+ * Represents a customer record in the system
+ */
 export interface Customer {
-  id: string;
-  name: string;
-  type: string;
-  industry: string;
-  acvRange: string;
-  revenue: number;
-  teamId: string;
+  id: string;           // Unique identifier
+  name: string;         // Customer name
+  type: string;         // Customer type (New/Existing)
+  industry: string;     // Industry sector
+  acvRange: string;     // ACV range category
+  revenue: number;      // Customer revenue
+  teamId: string;       // Associated team ID
 }
 
+/**
+ * Team member interface
+ * Represents an individual team member with performance metrics
+ */
 export interface TeamMember {
   id: string;
   name: string;
   role: string;
   performance: {
-    revenue: number;
-    customers: number;
-    deals: number;
+    revenue: number;    // Revenue generated
+    customers: number;  // Number of customers
+    deals: number;      // Number of deals closed
   };
 }
 

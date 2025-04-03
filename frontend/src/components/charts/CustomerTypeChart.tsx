@@ -1,9 +1,22 @@
+/**
+ * CustomerTypeChart Component
+ * 
+ * Renders a donut chart visualization for customer type distribution.
+ * Uses D3.js for interactive data visualization.
+ * 
+ * Features:
+ * - Interactive donut chart
+ * - Dynamic data updates
+ * - Responsive design
+ * - Custom color schemes
+ */
+
 import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 import { Customer } from '../../types';
 
 interface CustomerTypeChartProps {
-  data: Customer[];
+  data: Customer[];  // Array of customer data
 }
 
 const CustomerTypeChart: React.FC<CustomerTypeChartProps> = ({ data }) => {

@@ -1,3 +1,15 @@
+/**
+ * Express Server Configuration
+ * 
+ * Sets up the main Express server with necessary middleware and routes.
+ * Handles CORS, routing, and API endpoint configuration.
+ * 
+ * Features:
+ * - CORS support
+ * - Route modularization
+ * - Error handling
+ */
+
 import express from 'express';
 import cors from 'cors';
 import acvRoutes from './routes/acv';

@@ -1,3 +1,17 @@
+/**
+ * Industries Page Component
+ * 
+ * Displays industry-wise distribution of customers and revenue.
+ * Shows performance metrics across different industry sectors.
+ * 
+ * Features:
+ * - Quarter-based filtering
+ * - Industry-wise metrics
+ * - Performance comparison
+ * - Interactive data visualization
+ * - Loading and error states
+ */
+
 import React, { useEffect, useState } from 'react';
 import {
   Paper,
@@ -24,13 +38,22 @@ import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import { api } from '../services/api';
 
+/**
+ * Main Industries page component
+ * Manages industry data and visualization
+ */
 const IndustriesPage: React.FC = () => {
+  // State management
   const [selectedQuarter, setSelectedQuarter] = useState('2024-Q2');
   const [industries, setIndustries] = useState<Industry[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const quarters = ['2023-Q3', '2023-Q4', '2024-Q1', '2024-Q2'];
 
+  /**
+   * Fetches industry data on component mount
+   * Updates state with fetched data or error message
+   */
   useEffect(() => {
     const fetchData = async () => {
       try {

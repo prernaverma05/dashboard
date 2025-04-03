@@ -1,12 +1,27 @@
+/**
+ * ACVRangeCharts Component
+ * 
+ * Visualizes Annual Contract Value (ACV) range distributions.
+ * Shows the distribution of customers across different ACV ranges.
+ * 
+ * Features:
+ * - Stacked bar chart showing ACV range distribution over time
+ * - Donut chart displaying overall ACV range distribution
+ * - Interactive elements and tooltips
+ * - Responsive visualization
+ */
 import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 import { Box } from '@mui/material';
 
+/**
+ * Interface for ACV range data
+ */
 interface ACVRangeData {
-  count: number;
-  acv: number;
-  closed_fiscal_quarter: string;
-  ACV_Range?: string;
+  count: number;         // Number of customers
+  acv: number;          // Total ACV in range
+  closed_fiscal_quarter: string;  // Fiscal quarter
+  ACV_Range?: string;   // ACV range category
 }
 
 interface ChartProps {

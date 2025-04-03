@@ -1,7 +1,20 @@
+/**
+ * CustomerTypeCharts Component
+ * 
+ * Renders visualizations for customer type data including:
+ * - Bar chart showing distribution over time
+ * - Donut chart showing overall distribution
+ * 
+ * Uses D3.js for data visualization
+ */
+
 import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 import { Box } from '@mui/material';
 
+/**
+ * Props interface for customer type data
+ */
 interface CustomerTypeData {
   count: number;
   acv: number;
@@ -13,6 +26,9 @@ interface ChartProps {
   data: CustomerTypeData[];
 }
 
+/**
+ * Interface for processed data used in charts
+ */
 interface ProcessedData {
   quarter: string;
   existing: number;
@@ -20,6 +36,9 @@ interface ProcessedData {
   total: number;
 }
 
+/**
+ * Renders customer type distribution charts
+ */
 const CustomerTypeCharts: React.FC<ChartProps> = ({ data }) => {
   const barChartRef = useRef<SVGSVGElement | null>(null);
   const donutChartRef = useRef<SVGSVGElement | null>(null);

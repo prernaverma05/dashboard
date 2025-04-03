@@ -1,3 +1,23 @@
+/**
+ * Dashboard Page Component
+ * 
+ * Main dashboard view that aggregates and displays key metrics across all categories.
+ * Serves as the central hub for analytics visualization.
+ * 
+ * Features:
+ * - Multiple data type views (Teams, Industries, ACV Ranges, Customer Types)
+ * - Interactive charts and tables
+ * - Dynamic data loading
+ * - Comprehensive metrics display
+ * - Error handling and loading states
+ * 
+ * Data Types:
+ * - Teams: Team performance metrics
+ * - Industries: Industry-wise distribution
+ * - ACV Ranges: Contract value distribution
+ * - Customer Types: New vs Existing customer metrics
+ */
+
 import React, { useEffect, useState } from 'react';
 import {
   Box,
@@ -27,19 +47,29 @@ import TeamCharts from '../components/TeamCharts';
 import IndustryCharts from '../components/IndustryCharts';
 import ACVRangeCharts from '../components/ACVRangeCharts';
 
+/**
+ * Supported data types for dashboard visualization
+ */
 type DataType = 'acv-range' | 'customer-type' | 'industries' | 'teams';
 
+/**
+ * Interface for dashboard data items
+ */
 interface DataItem {
-  count: number;
-  acv: number;
-  closed_fiscal_quarter: string;
-  Team?: string;
-  Cust_Type?: string;
-  Acct_Industry?: string;
-  ACV_Range?: string;
-  [key: string]: any; // For any other properties
+  count: number;          // Number of items (customers/deals)
+  acv: number;           // Annual Contract Value
+  closed_fiscal_quarter: string;  // Fiscal quarter
+  Team?: string;         // Team name (for team view)
+  Cust_Type?: string;    // Customer type (for customer type view)
+  Acct_Industry?: string; // Industry name (for industry view)
+  ACV_Range?: string;    // ACV range (for ACV range view)
+  [key: string]: any;    // Additional dynamic properties
 }
 
+/**
+ * Main Dashboard component
+ * Central hub for data visualization and analytics
+ */
 const Dashboard: React.FC = () => {
   const [selectedDataType, setSelectedDataType] = useState<DataType>('teams');
   const [loading, setLoading] = useState(true);
@@ -118,6 +148,10 @@ const Dashboard: React.FC = () => {
     }
   };
 
+  /**
+   * Renders the customer type data table
+   * Displays quarterly data with counts, ACV, and percentages
+   */
   const renderCustomerTypeTable = (data: DataItem[]) => {
     // Get unique quarters and sort them
     const quarters = Array.from(new Set(data.map(d => d.closed_fiscal_quarter))).sort();

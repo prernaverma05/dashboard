@@ -1,3 +1,15 @@
+/**
+ * Customer Routes
+ * 
+ * Handles all customer-related API endpoints.
+ * Provides data for customer analytics and reporting.
+ * 
+ * Endpoints:
+ * - GET /customer-type: Returns customer type distribution
+ * - GET /customers: Returns all customers
+ * - GET /customers/type/:type: Returns customers by type
+ */
+
 import express from 'express';
 import path from 'path';
 import fs from 'fs';
@@ -11,6 +23,10 @@ const readJsonData = (filename: string) => {
   return JSON.parse(rawData);
 };
 
+/**
+ * GET /customer-type
+ * Returns customer type distribution data
+ */
 router.get('/customer-type', (req, res) => {
   try {
     const data = readJsonData('Customer Type.json') as CustomerType[];

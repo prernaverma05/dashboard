@@ -1,3 +1,17 @@
+/**
+ * CustomerType Page Component
+ * 
+ * Displays analytics and metrics for different customer types.
+ * Shows distribution between new and existing customers.
+ * 
+ * Features:
+ * - Quarter-based filtering
+ * - Customer type metrics
+ * - Performance comparison
+ * - Key performance indicators
+ * - Loading and error handling
+ */
+
 import React, { useEffect, useState } from 'react';
 import {
   Paper,
@@ -24,13 +38,22 @@ import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import { api } from '../services/api';
 
+/**
+ * Main CustomerType page component
+ * Manages customer type data and visualization
+ */
 const CustomerTypePage: React.FC = () => {
+  // State management
   const [selectedQuarter, setSelectedQuarter] = useState('2024-Q2');
   const [customerTypes, setCustomerTypes] = useState<CustomerType[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const quarters = ['2023-Q3', '2023-Q4', '2024-Q1', '2024-Q2'];
 
+  /**
+   * Fetches customer type data on component mount
+   * Updates state with fetched data or error message
+   */
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -48,8 +71,8 @@ const CustomerTypePage: React.FC = () => {
     fetchData();
   }, []);
 
+  // Calculate metrics for the selected quarter
   const filteredData = customerTypes.filter(d => d.closed_fiscal_quarter === selectedQuarter);
-  
   const totalCustomers = filteredData.reduce((sum, type) => sum + type.count, 0);
   const totalACV = filteredData.reduce((sum, type) => sum + type.acv, 0);
   const averageACV = totalCustomers > 0 ? totalACV / totalCustomers : 0;
