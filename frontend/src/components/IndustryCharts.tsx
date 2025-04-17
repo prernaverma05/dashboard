@@ -1,54 +1,87 @@
-/**
- * IndustryCharts Component
- * 
- * Visualizes industry distribution and performance data.
- * Provides insights into industry-wise revenue and customer distribution.
- * 
- * Features:
- * - Stacked bar chart for temporal analysis
- * - Donut chart for overall distribution
- * - Interactive legends and tooltips
- * - Responsive layout
- */
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
-import { Box } from '@mui/material';
+import { 
+  Box,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  IconButton,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Typography,
+  styled
+} from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 
-/**
- * Interface for industry data structure
- */
+const StyledBackdrop = styled('div')({
+  position: 'fixed',
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+  backgroundColor: 'rgba(0, 0, 0, 0.8)',
+  zIndex: 1000,
+});
+
 interface IndustryData {
-  count: number;         // Number of customers
-  acv: number;          // Annual Contract Value
-  closed_fiscal_quarter: string;  // Fiscal quarter
-  Acct_Industry?: string;  // Industry name
+  count: number;
+  acv: number;
+  closed_fiscal_quarter: string;
+  Acct_Industry?: string;
 }
 
-/**
- * Props interface for the chart component
- */
 interface ChartProps {
-  data: IndustryData[];  // Array of industry data
+  data: IndustryData[];
 }
 
 interface ProcessedData {
   quarter: string;
-  [key: string]: number | string; // Dynamic keys for different industries
+  [key: string]: number | string;
+}
+
+interface DialogState {
+  open: boolean;
+  industry: string;
+  data: IndustryData[];
+  color: string;
 }
 
 const IndustryCharts: React.FC<ChartProps> = ({ data }) => {
   const barChartRef = useRef<SVGSVGElement | null>(null);
   const donutChartRef = useRef<SVGSVGElement | null>(null);
+  const [dialogState, setDialogState] = useState<DialogState>({
+    open: false,
+    industry: '',
+    data: [],
+    color: ''
+  });
+
+  const handleClose = () => {
+    setDialogState(prev => ({ ...prev, open: false }));
+  };
+
+  const handleIndustryClick = (industry: string, color: string) => {
+    const industryData = data.filter(d => d.Acct_Industry === industry);
+    setDialogState({
+      open: true,
+      industry,
+      data: industryData,
+      color
+    });
+  };
 
   useEffect(() => {
     if (!data.length) return;
 
-    // Process data for visualization
     const quarterlyData = d3.group(data, d => d.closed_fiscal_quarter);
     const processedData: ProcessedData[] = [];
     const industries = Array.from(new Set(data.map(d => d.Acct_Industry || ''))).sort();
     
-    // Sort quarters for consistent ordering
     const sortedQuarters = Array.from(quarterlyData.keys()).sort();
     
     sortedQuarters.forEach(quarter => {
@@ -66,7 +99,6 @@ const IndustryCharts: React.FC<ChartProps> = ({ data }) => {
       processedData.push(dataPoint);
     });
 
-    // Calculate totals for donut chart
     const industryTotals = industries.map(industry => ({
       type: industry,
       value: d3.sum(data.filter(d => d.Acct_Industry === industry), d => d.acv)
@@ -81,7 +113,6 @@ const IndustryCharts: React.FC<ChartProps> = ({ data }) => {
     const width = 800 - margin.left - margin.right;
     const height = 400 - margin.top - margin.bottom;
 
-    // Clear previous chart
     d3.select(barChartRef.current).selectAll('*').remove();
 
     const svg = d3.select(barChartRef.current)
@@ -90,7 +121,6 @@ const IndustryCharts: React.FC<ChartProps> = ({ data }) => {
       .append('g')
       .attr('transform', `translate(${margin.left},${margin.top})`);
 
-    // Scales
     const x = d3.scaleBand()
       .domain(processedData.map(d => d.quarter))
       .range([0, width])
@@ -100,7 +130,6 @@ const IndustryCharts: React.FC<ChartProps> = ({ data }) => {
       .domain([0, d3.max(processedData, d => d.total as number) || 0])
       .range([height, 0]);
 
-    // Stack the data
     const stack = d3.stack<ProcessedData>()
       .keys(industries)
       .order(d3.stackOrderNone)
@@ -108,19 +137,16 @@ const IndustryCharts: React.FC<ChartProps> = ({ data }) => {
 
     const stackedData = stack(processedData);
 
-    // Color scale
     const color = d3.scaleOrdinal<string>()
       .domain(industries)
       .range(d3.schemeCategory10);
 
-    // Add bars
     const layers = svg.append('g')
       .selectAll('g')
       .data(stackedData)
       .join('g')
       .attr('fill', d => color(d.key));
 
-    // Add bar rectangles
     layers.selectAll('rect')
       .data(d => d)
       .join('rect')
@@ -129,7 +155,6 @@ const IndustryCharts: React.FC<ChartProps> = ({ data }) => {
       .attr('height', d => y(d[0]) - y(d[1]))
       .attr('width', x.bandwidth());
 
-    // Add value labels inside bars
     layers.selectAll('text')
       .data(d => d)
       .join('text')
@@ -144,7 +169,6 @@ const IndustryCharts: React.FC<ChartProps> = ({ data }) => {
         return value > 0 ? `$${d3.format('.0f')(value / 1000)}K` : '';
       });
 
-    // Add axes
     svg.append('g')
       .attr('transform', `translate(0,${height})`)
       .call(d3.axisBottom(x))
@@ -158,7 +182,6 @@ const IndustryCharts: React.FC<ChartProps> = ({ data }) => {
       .call(d3.axisLeft(y)
         .tickFormat(d => `$${d3.format('.0f')(Number(d) / 1000)}K`));
 
-    // Add legend
     const legend = svg.append('g')
       .attr('transform', `translate(${width + 10}, 0)`);
 
@@ -177,7 +200,6 @@ const IndustryCharts: React.FC<ChartProps> = ({ data }) => {
         .text(industry);
     });
 
-    // Add title
     svg.append('text')
       .attr('x', width / 2)
       .attr('y', -margin.top / 2)
@@ -191,7 +213,6 @@ const IndustryCharts: React.FC<ChartProps> = ({ data }) => {
     const height = 250;
     const radius = Math.min(width, height) / 2;
 
-    // Clear previous chart
     d3.select(donutChartRef.current).selectAll('*').remove();
 
     const svg = d3.select(donutChartRef.current)
@@ -211,7 +232,6 @@ const IndustryCharts: React.FC<ChartProps> = ({ data }) => {
       .innerRadius(radius * 0.6)
       .outerRadius(radius);
 
-    // Add the arcs
     const arcs = svg.selectAll('arc')
       .data(pie(data))
       .enter()
@@ -219,15 +239,15 @@ const IndustryCharts: React.FC<ChartProps> = ({ data }) => {
 
     arcs.append('path')
       .attr('d', d => arc(d) || '')
-      .attr('fill', d => color(d.data.type));
+      .attr('fill', d => color(d.data.type))
+      .style('cursor', 'pointer')
+      .on('click', (event, d) => handleIndustryClick(d.data.type, color(d.data.type)));
 
-    // Add labels
     arcs.append('text')
       .attr('transform', d => `translate(${arc.centroid(d)})`)
       .attr('text-anchor', 'middle')
       .text(d => `${d3.format('.1%')(d.data.value / d3.sum(data, d => d.value))}`);
 
-    // Add legend
     const legend = svg.append('g')
       .attr('transform', `translate(${radius + 10},-${radius})`);
 
@@ -246,7 +266,6 @@ const IndustryCharts: React.FC<ChartProps> = ({ data }) => {
         .text(`${d.type} (${d3.format('.1%')(d.value / d3.sum(data, d => d.value))})`);
     });
 
-    // Add center text
     svg.append('text')
       .attr('text-anchor', 'middle')
       .attr('dy', '0.35em')
@@ -255,11 +274,83 @@ const IndustryCharts: React.FC<ChartProps> = ({ data }) => {
   };
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+    <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 4, position: 'relative' }}>
       <svg ref={barChartRef}></svg>
       <svg ref={donutChartRef}></svg>
+
+      {dialogState.open && <StyledBackdrop onClick={handleClose} />}
+      
+      <Dialog 
+        open={dialogState.open} 
+        onClose={handleClose}
+        maxWidth="md"
+        fullWidth
+        sx={{
+          '& .MuiDialog-paper': {
+            backgroundColor: 'white',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.15)',
+            position: 'relative',
+            zIndex: 1100,
+          }
+        }}
+      >
+        <DialogTitle 
+          sx={{ 
+            m: 0, 
+            p: 2, 
+            display: 'flex', 
+            justifyContent: 'space-between', 
+            alignItems: 'center',
+            backgroundColor: dialogState.color,
+            color: 'white'
+          }}
+        >
+          <Typography variant="h6" component="div">
+            {`${dialogState.industry} Industry Details`}
+          </Typography>
+          <IconButton
+            aria-label="close"
+            onClick={handleClose}
+            sx={{ color: 'white' }}
+          >
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
+        <DialogContent dividers>
+          <TableContainer 
+            component={Paper} 
+            sx={{ 
+              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+              backgroundColor: 'white'
+            }}
+          >
+            <Table>
+              <TableHead>
+                <TableRow sx={{ backgroundColor: dialogState.color, opacity: 0.8 }}>
+                  <TableCell sx={{ color: 'black', fontWeight: 'bold' }}>Fiscal Quarter</TableCell>
+                  <TableCell sx={{ color: 'black', fontWeight: 'bold' }} align="right">Count</TableCell>
+                  <TableCell sx={{ color: 'black', fontWeight: 'bold' }} align="right">ACV ($)</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {dialogState.data.map((row, index) => (
+                  <TableRow key={index}>
+                    <TableCell component="th" scope="row">
+                      {row.closed_fiscal_quarter}
+                    </TableCell>
+                    <TableCell align="right">{row.count}</TableCell>
+                    <TableCell align="right">
+                      ${d3.format(',.2f')(row.acv)}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </DialogContent>
+      </Dialog>
     </Box>
   );
 };
 
-export default IndustryCharts; 
+export default IndustryCharts;
